@@ -63,9 +63,7 @@ def list_jobs(printer=None, **kwargs):
     r = requests.get(url, params=params, **kwargs)
     if r.status_code != requests.codes.ok:
         return r
-    # At the time of writing, the `/jobs` API returns `Content-Type:
-    # text/plain` header
-    return (r.json() if hasattr(r, "json") else json.loads(r.text))['jobs']
+    return r.json()
 
 
 def list_printers(**kwargs):
