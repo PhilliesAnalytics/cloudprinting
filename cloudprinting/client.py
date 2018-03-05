@@ -85,7 +85,7 @@ def list_printers(**kwargs):
     return r.json()
 
 
-def submit_job(printer, content, title=None, ticket=None, tags=None,
+def submit_job(printer, content, title=None, capabilities=None, tags=None,
                content_type=None, **kwargs):
     """
     Submit a print job.
@@ -125,16 +125,15 @@ def submit_job(printer, content, title=None, ticket=None, tags=None,
     if title is None:
         title = name
 
-    if ticket is None:
+    if capabilities is None:
         # magic default value
-        ticket = [{}]
+        capabilities = [{}]
 
     files = {"content": (name, content)}
     data = {"printerid": printer,
             "title": title,
             "contentType": content_type or mimetypes.guess_type(name)[0],
-            "ticket": json.dumps(ticket)}
-    print data
+            "capabilities": json.dumps({"capabilities": capabilities})}
     if tags:
         data['tag'] = tags
     url = CLOUDPRINT_URL + "/submit"
