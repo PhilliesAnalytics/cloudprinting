@@ -133,9 +133,10 @@ def submit_job(printer, content, title=None, ticket=None, tags=None,
     data = {"printerid": printer,
             "title": title,
             "contentType": content_type or mimetypes.guess_type(name)[0],
-            "ticket": json.dumps({"ticket": ticket})}
+            "ticket": json.dumps(ticket)}
+    print data
     if tags:
         data['tag'] = tags
     url = CLOUDPRINT_URL + "/submit"
-    r = requests.post(url, data=data, files=files, **kwargs)
+    r = requests.post(url, data=data, files=files)
     return r.json() if r.status_code == requests.codes.ok else r
